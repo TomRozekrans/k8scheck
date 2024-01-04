@@ -8,9 +8,7 @@ import kr8s
 from icheck import ICheck
 from prompt_toolkit import print_formatted_text as print
 
-
 PLUGIN_DIR = Path(__file__).parent / "checks"
-
 
 
 class K8Check:
@@ -19,6 +17,7 @@ class K8Check:
 
     def __init__(self):
         self.load_plugins()
+        self.check_k8s_connection()
 
     def load_plugins(self):
         for plugin in PLUGIN_DIR.glob("*.py"):
@@ -39,7 +38,6 @@ class K8Check:
         for plugin in self.plugins:
             print(f" - {plugin}")
 
-
     def check_k8s_connection(self):
         try:
             self.client = kr8s.api()
@@ -47,8 +45,7 @@ class K8Check:
             print(f"Error connecting to k8s cluster")
             print(e)
             sys.exit(1)
-        print(f"Connected to k8s cluster {self.client.get} as {self.client.whoami()}")
-
+        print(f"Connected to k8s cluster as {self.client.whoami()}")
 
 
 if __name__ == "__main__":
